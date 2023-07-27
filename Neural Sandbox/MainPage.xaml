@@ -1,0 +1,370 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:local="clr-namespace:Neural_Sandbox"
+             x:Class="Neural_Sandbox.MainPage"
+             Title="">
+
+    <Grid RowDefinitions="*"
+        ColumnDefinitions=".25*, .50*, .25*"
+          ColumnSpacing="5"
+          Padding="5">
+        
+        <!-- 1st Section -->
+        <Border Grid.Column="0"
+                Padding="10">
+            <Grid RowDefinitions=".33*, .33*, .33*"
+                  ColumnDefinitions="*"
+                  VerticalOptions="Fill">
+                <StackLayout  Grid.Row="0">
+                    <Label Text="Set-up"
+               Grid.Column="1"
+               Grid.Row="0"
+               FontAttributes="Bold"/>
+                    <Label Text="Input Layers"/>
+                    <Border HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="0"/>
+                        </Border.StrokeShape>
+                        <CollectionView x:Name="inputLayerList"
+                                      AutomationId="inputLayerList"
+                                      ItemsSource="{Binding inputLayers}"
+                                      SelectionMode="Single"
+                                      HorizontalOptions="FillAndExpand"
+                                      VerticalOptions="FillAndExpand"
+                                      BackgroundColor="Transparent">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame BackgroundColor="Transparent"
+                                       CornerRadius="0"
+                                       BorderColor="{StaticResource Tertiary}">
+                                    <Grid ColumnDefinitions="Auto, *">
+                                        <Label Text="{Binding TypeOfFile}" Grid.Column="0"/>
+                                        <HorizontalStackLayout Grid.Column="1" HorizontalOptions="End">
+                                            <Label Text="{Binding OptionName}"/>
+                                            <Entry Text="{Binding Option}"/>
+                                        </HorizontalStackLayout>
+
+                                    </Grid>
+                                    <FlyoutBase.ContextFlyout>
+                                        <MenuFlyout>
+                                            <MenuFlyoutSubItem Text="➕ Add">
+                                                <MenuFlyoutItem Text="Text"
+                                Clicked="CreateLayer"
+                                CommandParameter="Text"
+                                AutomationId="inputLayerList"/>
+                                                <MenuFlyoutItem Text="Image"
+                                Clicked="CreateLayer"
+                                CommandParameter="Image"
+                                AutomationId="inputLayerList"/>
+                                            </MenuFlyoutSubItem>
+                                            <MenuFlyoutItem Text="✖ Duplicate"
+                                            Clicked="CreateLayer"
+                                            CommandParameter="{Binding TypeOfFile}"
+                                            AutomationId="inputLayerList"/>
+                                            <MenuFlyoutItem Text="➖ Remove"
+                                            Clicked="RemoveLayer"
+                                            CommandParameter="{Binding .}"
+                                            AutomationId="inputLayerList"/>
+                                        </MenuFlyout>
+                                    </FlyoutBase.ContextFlyout>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                        <!-- the command parameter is sent to the function to choose which type of array should be made. -->
+                        <FlyoutBase.ContextFlyout>
+                            <MenuFlyout>
+                                <MenuFlyoutSubItem Text="➕ Add">
+                                    <MenuFlyoutItem Text="Text"
+                                Clicked="CreateLayer"
+                                CommandParameter="Text"
+                                AutomationId="inputLayerList"/>
+                                    <MenuFlyoutItem Text="Image"
+                                Clicked="CreateLayer"
+                                CommandParameter="Image"
+                                AutomationId="inputLayerList"/>
+                                </MenuFlyoutSubItem>
+                            </MenuFlyout>
+                        </FlyoutBase.ContextFlyout>
+                    </CollectionView>
+                    </Border>
+                </StackLayout>
+
+                <StackLayout  Grid.Row="1">
+                    <Label Text="Output Layers"/>
+                    <Border HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="0"/>
+                        </Border.StrokeShape>
+                        <CollectionView x:Name="outputLayerList"
+                                      AutomationId="outputLayerList"
+                                      ItemsSource="{Binding outputLayers}"
+                                      SelectionMode="Single"
+                                      HorizontalOptions="FillAndExpand"
+                                      VerticalOptions="FillAndExpand"
+                                      BackgroundColor="Transparent">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Frame BackgroundColor="Transparent"
+                                       CornerRadius="0"
+                                       BorderColor="{StaticResource Tertiary}">
+                                        <Grid ColumnDefinitions="Auto, *">
+                                            <Label Text="{Binding TypeOfFile}" Grid.Column="0"/>
+                                            <HorizontalStackLayout Grid.Column="1" HorizontalOptions="End">
+                                                <Label Text="{Binding OptionName}"/>
+                                                <Entry Text="{Binding Option}"/>
+                                            </HorizontalStackLayout>
+
+                                        </Grid>
+                                        <FlyoutBase.ContextFlyout>
+                                            <MenuFlyout>
+                                                <MenuFlyoutSubItem Text="➕ Add">
+                                                    <MenuFlyoutItem Text="Text"
+                                Clicked="CreateLayer"
+                                CommandParameter="Text"
+                                AutomationId="outputLayerList"/>
+                                                    <MenuFlyoutItem Text="Image"
+                                Clicked="CreateLayer"
+                                CommandParameter="Image"
+                                AutomationId="outputLayerList"/>
+                                                </MenuFlyoutSubItem>
+                                                <MenuFlyoutItem Text="✖ Duplicate"
+                                            Clicked="CreateLayer"
+                                            CommandParameter="{Binding TypeOfFile}"
+                                            AutomationId="outputLayerList"/>
+                                                <MenuFlyoutItem Text="➖ Remove"
+                                            Clicked="RemoveLayer"
+                                            CommandParameter="{Binding .}"
+                                            AutomationId="outputLayerList"/>
+                                            </MenuFlyout>
+                                        </FlyoutBase.ContextFlyout>
+                                    </Frame>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                            <!-- the command parameter is sent to the function to choose which type of array should be made. -->
+                            <FlyoutBase.ContextFlyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutSubItem Text="➕ Add">
+                                        <MenuFlyoutItem Text="Text"
+                                Clicked="CreateLayer"
+                                CommandParameter="Text"
+                                AutomationId="outputLayerList"/>
+                                        <MenuFlyoutItem Text="Image"
+                                Clicked="CreateLayer"
+                                CommandParameter="Image"
+                                AutomationId="outputLayerList"/>
+                                    </MenuFlyoutSubItem>
+                                </MenuFlyout>
+                            </FlyoutBase.ContextFlyout>
+                        </CollectionView>
+                    </Border>
+                </StackLayout>
+
+
+                <StackLayout Grid.Row="2">
+                    <Label Text="Hidden Layers"/>
+                    <Border HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="0"/>
+                        </Border.StrokeShape>
+                        <CollectionView x:Name="hiddenLayerList"
+                                      AutomationId="hiddenLayerList"
+                                      ItemsSource="{Binding hiddenLayers}"
+                                      SelectionMode="Single"
+                                      HorizontalOptions="FillAndExpand"
+                                      VerticalOptions="FillAndExpand"
+                                      BackgroundColor="Transparent">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Frame BackgroundColor="Transparent"
+                                       CornerRadius="0"
+                                       BorderColor="{StaticResource Tertiary}">
+                                        <Grid ColumnDefinitions="Auto, *">
+                                            <Label Text="{Binding TypeOfFunction}" Grid.Column="0"/>
+                                            <HorizontalStackLayout Grid.Column="1" HorizontalOptions="End">
+                                                <Label Text="Size:"/>
+                                                <Entry Text="{Binding Size}"/>
+                                                <Label Text="Duplicates:"/>
+                                                <Entry Text="{Binding Duplicate}"/>
+                                                <VerticalStackLayout>
+                                                    <Button Text="⬆️" Pressed="ChangeOrderUp" CommandParameter="{Binding .}" WidthRequest="15" HeightRequest="15"/>
+                                                    <Button Text="⬇️" Pressed="ChangeOrderDown" CommandParameter="{Binding .}" WidthRequest="15" HeightRequest="15"/>
+                                                </VerticalStackLayout>
+                                            </HorizontalStackLayout>
+
+                                        </Grid>
+                                        <FlyoutBase.ContextFlyout>
+                                            <MenuFlyout>
+                                                <MenuFlyoutSubItem Text="➕ Add">
+                                                    <MenuFlyoutItem Text="ReLU"
+                                                                Clicked="CreateLayer"
+                                                                CommandParameter="ReLU"
+                                                                AutomationId="hiddenLayerList"/>
+                                                    <MenuFlyoutItem Text="ELU"
+                                                                Clicked="CreateLayer"
+                                                                CommandParameter="ELU"
+                                                                AutomationId="hiddenLayerList"/>
+                                                    <MenuFlyoutItem Text="PReLU"
+                                                                Clicked="CreateLayer"
+                                                                CommandParameter="PReLU"
+                                                                AutomationId="hiddenLayerList"/>
+                                                    <MenuFlyoutItem Text="tanh"
+                                                                Clicked="CreateLayer"
+                                                                CommandParameter="tanh"
+                                                                AutomationId="hiddenLayerList"/>
+                                                    <MenuFlyoutItem Text="Sigmoid"
+                                                                Clicked="CreateLayer"
+                                                                CommandParameter="Sigmoid"
+                                                                AutomationId="hiddenLayerList"/>
+                                                </MenuFlyoutSubItem>
+                                                <MenuFlyoutItem Text="✖ Duplicate"
+                                            Clicked="CreateLayer"
+                                            CommandParameter="{Binding TypeOfFunction}"
+                                            AutomationId="hiddenLayerList"/>
+                                                <MenuFlyoutItem Text="➖ Remove"
+                                            Clicked="RemoveLayer"
+                                            CommandParameter="{Binding .}"
+                                            AutomationId="hiddenLayerList"/>
+                                            </MenuFlyout>
+                                        </FlyoutBase.ContextFlyout>
+
+                                    </Frame>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                            <!-- the command parameter is sent to the function to choose which type of array should be made. -->
+                            <FlyoutBase.ContextFlyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutSubItem Text="➕ Add">
+                                        <MenuFlyoutItem Text="ReLU"
+                                                                Clicked="CreateLayer"
+                                                                CommandParameter="ReLU"
+                                                                AutomationId="hiddenLayerList"/>
+                                        <MenuFlyoutItem Text="ELU"
+                                                                Clicked="CreateLayer"
+                                                                CommandParameter="ELU"
+                                                                AutomationId="hiddenLayerList"/>
+                                        <MenuFlyoutItem Text="PReLU"
+                                                                Clicked="CreateLayer"
+                                                                CommandParameter="PReLU"
+                                                                AutomationId="hiddenLayerList"/>
+                                        <MenuFlyoutItem Text="tanh"
+                                                                Clicked="CreateLayer"
+                                                                CommandParameter="tanh"
+                                                                AutomationId="hiddenLayerList"/>
+                                        <MenuFlyoutItem Text="Sigmoid"
+                                                                Clicked="CreateLayer"
+                                                                CommandParameter="Sigmoid"
+                                                                AutomationId="hiddenLayerList"/>
+                                    </MenuFlyoutSubItem>
+                                </MenuFlyout>
+                            </FlyoutBase.ContextFlyout>
+                        </CollectionView>
+                    </Border>
+                </StackLayout>
+            </Grid>
+        </Border>
+        <!-- 2nd Section -->
+        <Border Grid.Column="1"
+                Padding="10">
+            <StackLayout>
+                <Label Text="Usage"
+               FontAttributes="Bold"/>
+                <Grid RowDefinitions="Auto, Auto"
+          ColumnDefinitions="*"
+          Padding="5">
+
+                </Grid>
+            </StackLayout>
+        </Border>
+
+
+        <!-- 3rd Section -->
+        <Border Grid.Column="2"
+                Padding="10">
+
+            <StackLayout>
+                <Label Text="Training"
+               Grid.Column="2"
+               Grid.Row="0"
+               FontAttributes="Bold"/>
+                <Button Text="Train" Pressed="Train"/>
+                        <Button Text="Calculate Accuracy"/>
+
+                        
+                        <Label Text="Training Data"/>
+                <Border HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="5">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="0"/>
+                    </Border.StrokeShape>
+                    <CollectionView x:Name="trainlist"
+                                  AutomationId="trainlist"
+                                  ItemsSource="{Binding trainListSource}"
+                                  SelectionMode="Single"
+                                  HorizontalOptions="FillAndExpand"
+                                  VerticalOptions="FillAndExpand"
+                                  BackgroundColor="Transparent">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Border HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Stroke="{StaticResource Tertiary}" Padding="3">
+                                    <Grid MinimumHeightRequest="200" RowDefinitions="*, Auto">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <CollectionView Grid.Column="0" Grid.Row="0" ItemsSource="{Binding inputLayers}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                            <CollectionView.ItemTemplate>
+                                                <DataTemplate>
+                                                    <HorizontalStackLayout>
+                                                        <Label Text="{Binding TypeOfFile}" Margin="5" />
+                                                        <Button Pressed="AddFile" CommandParameter="{Binding .}"/>
+                                                    </HorizontalStackLayout>
+                                                </DataTemplate>
+                                            </CollectionView.ItemTemplate>
+                                        </CollectionView>
+                                        <CollectionView Grid.Column="1" ItemsSource="{Binding outputLayers}">
+                                            <CollectionView.ItemTemplate>
+                                                <DataTemplate>
+                                                    <HorizontalStackLayout>
+                                                        <Label Text="{Binding TypeOfFile}" Margin="5" />
+                                                        <Button Text=""/>
+                                                    </HorizontalStackLayout>
+                                                </DataTemplate>
+                                            </CollectionView.ItemTemplate>
+                                        </CollectionView>
+                                        <Button VerticalOptions="End" HorizontalOptions="End" Grid.Row="1" Grid.Column="2" Pressed="RemoveTrainingData" CommandParameter="{Binding .}" Text="➖ Remove"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+
+
+
+
+                    </CollectionView>
+                </Border>
+                <Button Text="Add Data"
+                            Clicked="AddTrainingData"/>
+
+                    
+            </StackLayout>
+        </Border>
+    </Grid>
+    
+    <ContentPage.MenuBarItems>
+        <MenuBarItem Text="File">
+            <MenuFlyoutItem Text="New"
+                            Clicked="NewNetwork" />
+            <MenuFlyoutItem Text="Save"
+                            Command="{Binding }" />
+            <MenuFlyoutSeparator/>
+            <MenuFlyoutItem Text="Exit"
+                            Clicked="QuitApp"/>
+        </MenuBarItem>
+        <MenuBarItem Text="Edit">
+            <MenuFlyoutItem Text="Preferences" Clicked="Preferences"/>
+        </MenuBarItem>
+    </ContentPage.MenuBarItems>
+</ContentPage>
+
